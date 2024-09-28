@@ -38,8 +38,8 @@ class InventronItemDetailAPIView(APIView):
         cached_item = cache.get(cache_key)
 
         if cached_item:
-            # If item found in cache, return it
-            return json.loads(cached_item)
+            # If item found in cache, retrieve it from the database to return as model instance
+            return InventronItem.objects.get(pk=pk)  # Ensure we return the model instance
 
         # If not found in cache, fetch from database
         try:
@@ -83,7 +83,7 @@ class InventronItemDetailAPIView(APIView):
         if item is None:
             return Response({"error": "Item not found"}, status=status.HTTP_404_NOT_FOUND)
         
-        item.delete()
+        item.delete()  # Now this will work as 'item' is the model instance
         # Invalidate cache since item is deleted
         cache.delete(f'inventron_item_{pk}')
         return Response({"message": "Item deleted"}, status=status.HTTP_204_NO_CONTENT)

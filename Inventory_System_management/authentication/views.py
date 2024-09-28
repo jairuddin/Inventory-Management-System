@@ -8,9 +8,6 @@ from rest_framework import generics
 from .serializers import UserRegistrationSerializer
 import logging
 
-
-
-
 class UserRegistrationView(generics.CreateAPIView):
     serializer_class = UserRegistrationSerializer
 
